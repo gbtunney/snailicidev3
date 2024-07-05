@@ -1,28 +1,23 @@
-name: Release
-
+name: snailicide/build
 on:
-    push:
-        branches:
-            - master
-
-concurrency: ${{ github.workflow }}-${{ github.ref }}
-
+    workflow_call:
+        inputs:
+            ARCHIVE_PATH:
+                required: true
+                type: string
 jobs:
-    release:
-        name: Release
+    archive:
         runs-on: ubuntu-latest
-        permissions:
-            contents: write
-            pull-requests: write
-            repository-projects: write
         steps:
-            - name: Checkout Repo
+            - run: echo 'Archive Snailicide Monorepo 🐌';
+
+            - name: Checkout 🛎️
               uses: actions/checkout@v3
 
             - name: Setup Node.js environment 🛎️
               uses: actions/setup-node@v3.8.1
               with:
-                  node-version: '18.7.0'
+                  node-version: '20.11.1'
 
             - name: Install pnpm 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
               run: |
@@ -32,12 +27,5 @@ jobs:
             - name: BUILD ALL PACKAGES
               run: |
                   pnpm run build && pnpm run fix && pnpm run check
-                  git status
-                  git branch
 
-            - name: Create Release Pull Request
-              uses: changesets/action@v1
-              with:
-                  commit: 'chore: this commit was created by changesets'
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - run: echo "🍏 This job's status is ${{ job.status }}."

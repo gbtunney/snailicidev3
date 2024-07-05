@@ -2,7 +2,6 @@
     "name": "@gbt/root",
     "version": "0.0.0",
     "description": "GilliMonorepo (edited)Root Package Template File",
-    "packageManager": "pnpm@^8.5.0",
     "scripts": {
         "\n========== COMMIT >> ==========": "",
         "commit": "pnpm exec git-cz",
