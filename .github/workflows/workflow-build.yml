@@ -1,10 +1,6 @@
-name: snailicide/build
-on:
-    workflow_call:
-        inputs:
-            ARCHIVE_PATH:
-                required: true
-                type: string
+name: Build DEMO
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
 jobs:
     archive:
         runs-on: ubuntu-latest
