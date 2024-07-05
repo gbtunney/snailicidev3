@@ -1,0 +1,142 @@
+{
+    "name": "test-package",
+    "version": "0.0.1",
+    "description": "Function library written in typescript",
+    "private": false,
+    "type": "module",
+    "scripts": {
+        "\n========== BUILD >> ==========": "",
+        "build": "pnpm build:ts && pnpm build:rollup",
+        "build:rollup": "rollup --config ./rollup.config.js",
+        "build:ts": "tsc --build",
+        "\n========== DEV >> ==========": "",
+        "dev": "tsc --build --watch",
+        "\n========== TEST >> ==========": "",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:example": "ts-node --esm ./exampleNodeScript.ts --path ./../../themes --name shopify-dawn",
+        "\n========== PUBLISH >> ==========": "",
+        "release": "pnpm  prerelease && pnpm publish --access public --report-summary --no-git-checks",
+        "prerelease": "pnpm clean && pnpm build && pnpm fix && pnpm check && pnpm test && pnpm run release:archive",
+        "release:archive": "mkdir -p ./releases &&  pnpm exec npm pack --pack-destination='./releases'",
+        "test:release:workflow": "open /Applications/Docker.app && cross-var pnpm exec gh act --workflows  $(git rev-parse --show-toplevel)/workflows/workflow-release-package.yml  --input PACKAGE_NAME='$npm_package_name' --reuse",
+        "\n========== CLEAN >> ==========": "",
+        "clean": "pnpm clean:ts && pnpm clean:build",
+        "clean:ts": "tsc --build --clean",
+        "clean:build": "rm -R -f dist && rm -R -f types && rm -R -f docs",
+        "\n========== CODE STYLE >> ==========": "",
+        "lint": "cross-var eslint \"{$npm_package_config_eslint_path}.{$npm_package_config_eslint_extensions}\" --ignore-path .gitignore -c $npm_package_config_eslint_config",
+        "prettier": "cross-var prettier {$npm_package_config_prettier_path}.{$npm_package_config_prettier_extensions} --ignore-path ./.gitignore",
+        "\n========== CHECK >> ==========": "",
+        "check": "pnpm lint",
+        "\n========== FIX >> ==========": "",
+        "fix": "pnpm prettier --write"
+    },
+    "dependencies": {
+        "ramda": "^0.29.0",
+        "ramda-adjunct": "^4.1.1",
+        "type-fest": "^4.3.1",
+        "zod": "^3.22.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20.6.2",
+        "@types/ramda": "^0.29.4",
+        "@rollup/plugin-commonjs": "^25.0.4",
+        "@rollup/plugin-json": "^6.0.0",
+        "@rollup/plugin-node-resolve": "^15.2.1",
+        "@rollup/plugin-terser": "^0.4.3",
+        "@snailicide/build-config": "*",
+        "@types/jest": "^29.5.5",
+        "cross-var": "^1.1.0",
+        "eslint": "^8.49.0",
+        "jest": "^29.7.0",
+        "prettier": "^3.0.3",
+        "rollup": "^3.29.2",
+        "rollup-plugin-bundle-esm": "^0.1.1",
+        "rollup-plugin-filesize": "^10.0.0",
+        "rollup-plugin-node-externals": "^6.1.1",
+        "rollup-plugin-polyfill-node": "^0.12.0",
+        "rollup-plugin-typescript2": "^0.35.0",
+        "ts-jest": "^29.1.1",
+        "ts-jest-resolver": "^2.0.1",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.2.2",
+        "vite": "^4.4.9"
+    },
+    "keywords": [
+        "typescript",
+        "js",
+        "ts",
+        "javascript",
+        "function library",
+        "type library",
+        "typeguards",
+        "typeguard",
+        "utilities"
+    ],
+    "files": [
+        "types",
+        "dist",
+        "CHANGELOG.md",
+        "vite.config.ts"
+    ],
+    "exports": {
+        ".": [
+            {
+                "import": "./dist/index.mjs",
+                "types": "./types/index.d.ts",
+                "require": "./dist/index.cjs",
+                "default": "./dist/index.js"
+            },
+            "./dist/index.js"
+        ]
+    },
+    "main": "dist/index.js",
+    "types": "types/index.d.ts",
+    "umd:main": "dist/index.umd.js",
+    "module": "dist/index.esm.js",
+    "commonjs": "dist/index.cjs",
+    "jsdelivr": "https://cdn.jsdelivr.net/npm/package@version/file",
+    "engines": {
+        "node": ">=18.0.0",
+        "pnpm": ">=8.0.0"
+    },
+    "packageManager": "pnpm@>=8.5.0",
+    "prettier": "@snailicide/build-config/prettier",
+    "jest": {
+        "preset": "ts-jest",
+        "resolver": "ts-jest-resolver",
+        "testPathIgnorePatterns": [
+            "/node_modules/",
+            "dist",
+            "types"
+        ]
+    },
+    "config": {
+        "deploy": {
+            "docs": {
+                "remote": "bluehost:~/public_html/docs-snailicide",
+                "local": "./docs/*"
+            }
+        },
+        "eslint": {
+            "extensions": "ts,js,cjs,mjs",
+            "path": ".es*,*,**/*",
+            "config": ".eslintrc.cjs"
+        },
+        "prettier": {
+            "extensions": "ts,js,cjs,mjs,cts,json,yaml,yml,graphql,md",
+            "path": "*,**/*"
+        }
+    },
+    "homepage": "https://github.com/gbtunney/snailicide-monorepo/tree/main/packages/g-library",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/gbtunney/snailicide-monorepo.git"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Gillian Tunney",
+        "email": "gbtunney@mac.com"
+    }
+}

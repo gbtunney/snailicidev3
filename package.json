@@ -1,0 +1,86 @@
+{
+    "name": "@gbt/root",
+    "version": "0.0.0",
+    "description": "GilliMonorepo (edited)Root Package Template File",
+    "packageManager": "pnpm@^8.5.0",
+    "scripts": {
+        "\n========== COMMIT >> ==========": "",
+        "commit": "pnpm exec git-cz",
+        "prepare:all": "pnpm run fix && pnpm run check && pnpm test",
+        "\n========== BUILD >> ==========": "",
+        "build": "pnpm -r build",
+        "build:self": "tsc --build",
+        "\n========== CODE STYLE >> ==========": "",
+        "lint": "cross-var eslint \"$npm_package_config_eslint_path.{$npm_package_config_eslint_extensions}\" -c $npm_package_config_eslint_config",
+        "prettier": "cross-var prettier {$npm_package_config_prettier_path}.{$npm_package_config_prettier_extensions} --ignore-path ./.gitignore",
+        "\n========== CHECK >> ==========": "",
+        "check": "pnpm check:self && pnpm -r check",
+        "check:self": "pnpm lint",
+        "\n========== FIX >> ==========": "",
+        "fix": "pnpm fix:self && pnpm -r fix",
+        "fix:self": "pnpm prettier --write",
+        "\n========== CLEAN >> ==========": "",
+        "clean": "pnpm -r clean",
+        "clean:self": "tsc --build --clean",
+        "\n========== LIFECYCLE >> ==========": "",
+        "prepare": "husky install",
+        "pre:commit": "lint-staged",
+        "\n========== WORKFLOW >> ==========": "",
+        "workflow:archive": "pnpm install && open /Applications/Docker.app && cross-var pnpm exec gh act --workflows  ./workflows/changeset-release.yml --secret 'GITHUB_TOKEN=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' --reuse",
+        "\n==========       TEST >> ==========": "",
+        "test": "echo  \"Error: no test specified\" ",
+        "\n========== UNINSTALL >> ==========": "",
+        "uninstall": "pnpm run clean && pnpm uninstall:list && pnpm run uninstall:rm && pnpm run uninstall:lock",
+        "uninstall:list": "find . -name 'node_modules' -type d -prune",
+        "uninstall:rm": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
+        "uninstall:lock": "rm -f pnpm-lock.yaml && rm -f packages/**/pnpm-lock.yaml"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@changesets/cli": "^2.26.2",
+        "@commitlint/cli": "^17.7.1",
+        "@commitlint/config-conventional": "^17.7.0",
+        "@commitlint/cz-commitlint": "^17.7.1",
+        "@snailicide/build-config": "^0.2.6",
+        "@types/node": "^20.6.2",
+        "commitizen": "^4.3.0",
+        "cross-var": "^1.1.0",
+        "eslint": "^8.49.0",
+        "git-branch-is": "^4.0.0",
+        "husky": "^8.0.3",
+        "lint-staged": "^14.0.1",
+        "prettier": "^3.0.3",
+        "typescript": "^5.2.2"
+    },
+    "engines": {
+        "node": ">=18.7.0",
+        "pnpm": ">=7.17.1"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "lint-staged": {
+        "*": "prettier --write",
+        "*.{ts,js,cjs,mjs}": "eslint -c .eslintrc.cjs"
+    },
+    "prettier": "@snailicide/build-config/prettier",
+    "eslintIgnore": [
+        "./packages"
+    ],
+    "config": {
+        "eslint": {
+            "extensions": "ts,js,cjs,mjs",
+            "path": "*",
+            "config": ".eslintrc.cjs"
+        },
+        "prettier": {
+            "extensions": "sh,ts,js,cjs,mjs,cts,json,yaml,yml,graphql,md",
+            "path": "*,./.husky/*,./.github/**/*"
+        },
+        "commitizen": {
+            "path": "@commitlint/cz-commitlint"
+        }
+    }
+}
